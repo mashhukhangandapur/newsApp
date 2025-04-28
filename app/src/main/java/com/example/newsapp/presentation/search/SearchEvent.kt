@@ -1,0 +1,11 @@
+package com.example.newsapp.presentation.search
+
+sealed class SearchEvent {
+
+    data class updateSearchQuery(
+        val searchQuery : String
+    ) : SearchEvent()
+
+    object SearchNews : SearchEvent()
+
+}
