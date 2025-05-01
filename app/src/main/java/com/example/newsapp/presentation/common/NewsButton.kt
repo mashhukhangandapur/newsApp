@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.newsapp.presentation.Dimens.MediumPadding1
+import com.example.newsapp.presentation.Dimens.MediumPadding2
 
 @Composable
 fun NewsButton(
@@ -21,7 +23,7 @@ fun NewsButton(
                 contentColor = Color.White,
                 containerColor = MaterialTheme.colorScheme.primary
             ),
-            shape = RoundedCornerShape(size = 6.dp)
+            shape = RoundedCornerShape(size = MediumPadding2)
             ) {
         Text(
             text= text,

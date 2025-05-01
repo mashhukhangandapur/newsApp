@@ -31,8 +31,11 @@ class SearchNewsPagingSource(
             // Print the stack trace for debugging
             e.printStackTrace()
             // Return error result to show error UI or retry
-            LoadResult.Error(e)
-        }    }
+            LoadResult.Error(
+                throwable = e
+            )
+        }
+    }
 
     private var totalNewsCount = 0
 

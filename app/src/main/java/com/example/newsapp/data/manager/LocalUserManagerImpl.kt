@@ -1,5 +1,6 @@
-package com.example.newsapp.data
+package com.example.newsapp.data.manager
 
+import android.app.Application
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -11,6 +12,7 @@ import com.example.newsapp.util.Constants
 import com.example.newsapp.util.Constants.USER_SETTINGS
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 /**
  * This class is just for saving & reading a flag (true/false) using DataStore.
@@ -19,14 +21,14 @@ import kotlinx.coroutines.flow.map
  * Used to handle storing and reading simple local data (like if user opened app before).
  */
 
-class LocalUserManagerImpl(
-    private val context: Context
-) : LocalUserManager{
+class LocalUserManagerImpl @Inject constructor(
+    private val application: Application
+) : LocalUserManager {
 
     // Saving data (value 'true') means "User has entered the app atleast once.
 
     override suspend fun savedAppEntry() {
-        context.dataStore.edit { settings ->
+        application.dataStore.edit { settings ->
             settings[PreferencesKeys.APP_ENTRY] = true
         }
     }
@@ -34,8 +36,8 @@ class LocalUserManagerImpl(
     //Reading data from the data store (as a Flow).
     //After user entry(app launch), check with readAppEntry() to see if onboarding should be skipped
     override fun readAppEntry(): Flow<Boolean> {
-        return context.dataStore.data.map { preferences ->
-            preferences[PreferencesKeys.APP_ENTRY]?: false
+        return application.dataStore.data.map { preferences ->
+            preferences[PreferencesKeys.APP_ENTRY] ?: false
         }
     }
 
@@ -45,7 +47,7 @@ class LocalUserManagerImpl(
 
     //Defines a constant key to be used inside DataStore.
     private object PreferencesKeys{
-        val APP_ENTRY = booleanPreferencesKey(name = Constants.APP_ENTRY)
+        val APP_ENTRY = booleanPreferencesKey(Constants.APP_ENTRY)
     }
 
 }

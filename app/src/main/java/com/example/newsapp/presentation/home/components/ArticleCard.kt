@@ -1,4 +1,4 @@
-package com.example.newsapp.presentation.common
+package com.example.newsapp.presentation.home.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +27,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.newsapp.R
 import com.example.newsapp.domain.model.Article
+import com.example.newsapp.presentation.Dimens.MediumPadding1
+import com.example.newsapp.presentation.Dimens.MediumPadding2
 
 @Composable
 fun ArticleCard(
@@ -47,7 +49,7 @@ fun ArticleCard(
         )
 
         Column( verticalArrangement = Arrangement.SpaceAround,
-            modifier= Modifier.padding(horizontal = 3.dp).height(96.dp)
+            modifier= Modifier.padding(horizontal = MediumPadding1).height(96.dp)
         ) {
             Text(text = article.title,
                  style = MaterialTheme.typography.bodyMedium,
@@ -62,14 +64,14 @@ fun ArticleCard(
                     color = colorResource(id = R.color.body)
                 )
 
-                Spacer(modifier = Modifier.width(6.dp))
+                Spacer(modifier = Modifier.width(MediumPadding2))
                 Icon(
                     painter = painterResource(id = R.drawable.ic_time),
                     contentDescription = null,
                     modifier = Modifier.size(11.dp),
                     tint = colorResource(id = R.color.body)
                 )
-                Spacer(modifier = Modifier.width(6.dp))
+                Spacer(modifier = Modifier.width(MediumPadding2))
                 Text(text = article.publishedAt,
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
                     color = colorResource(id = R.color.body)

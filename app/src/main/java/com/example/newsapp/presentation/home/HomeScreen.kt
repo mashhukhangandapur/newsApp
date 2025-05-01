@@ -31,7 +31,8 @@ import com.example.newsapp.presentation.navGraph.Route
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(articles: LazyPagingItems<Article>, navigate:(String) -> Unit) {
+fun HomeScreen(articles: LazyPagingItems<Article>, navigateToSearch:() -> Unit,
+               navigateToDetails : (Article) -> Unit) {
 
     val titles by remember {
         derivedStateOf {
@@ -52,7 +53,7 @@ fun HomeScreen(articles: LazyPagingItems<Article>, navigate:(String) -> Unit) {
             .statusBarsPadding()
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_logo),
+            painter = painterResource(id = R.drawable.ic_splash),
             contentDescription = null,
             modifier = Modifier
                 .width(150.dp)
@@ -71,8 +72,8 @@ fun HomeScreen(articles: LazyPagingItems<Article>, navigate:(String) -> Unit) {
             onValueChange = {},
             onSearch = {},
             onClick = {
-                navigate(Route.SearchScreen.route)
-            }
+                navigateToSearch()
+                }
         )
 
         Spacer(modifier = Modifier.height(3.dp))
@@ -91,7 +92,7 @@ fun HomeScreen(articles: LazyPagingItems<Article>, navigate:(String) -> Unit) {
             modifier = Modifier.padding(horizontal = 3.dp),
             articles = articles,
             onClick = {
-                //TODO: Navigate to Details Screen
+                navigateToDetails(it)
             }
         )
     }

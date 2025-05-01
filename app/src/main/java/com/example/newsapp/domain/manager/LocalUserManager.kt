@@ -7,4 +7,6 @@ interface LocalUserManager {
     suspend fun savedAppEntry()
 
     fun readAppEntry() : Flow<Boolean>
+
+
 }

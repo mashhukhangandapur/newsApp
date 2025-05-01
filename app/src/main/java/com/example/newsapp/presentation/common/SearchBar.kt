@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.R
+import com.example.newsapp.presentation.Dimens.IconSize
 import com.example.newsapp.ui.theme.NewsAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,7 +64,7 @@ fun SearchBar(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_search),
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(IconSize),
                     tint = colorResource(id = R.color.body)
                 )
             },
@@ -74,7 +76,7 @@ fun SearchBar(
                 )
             },
             shape = MaterialTheme.shapes.medium,
-//            colors = TextFieldDefaults.textFieldColors(
+//            colors = TextFieldDefaults.colors(
 //                containerColor = colorResource(id = R.color.input_background),
 //                textColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
 //                cursorColor = if (isSystemInDarkTheme()) Color.White else Color.Black,

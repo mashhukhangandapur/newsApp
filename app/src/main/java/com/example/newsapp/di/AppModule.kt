@@ -1,7 +1,11 @@
 package com.example.newsapp.di
 
 import android.app.Application
-import com.example.newsapp.data.LocalUserManagerImpl
+import androidx.room.Room
+import com.example.newsapp.data.manager.LocalUserManagerImpl
+import com.example.newsapp.data.local.NewsDao
+import com.example.newsapp.data.local.NewsDatabase
+import com.example.newsapp.data.local.NewsTypeConvertor
 import com.example.newsapp.data.remote.NewsApi
 import com.example.newsapp.data.repository.NewsRepositoryImpl
 import com.example.newsapp.domain.manager.LocalUserManager
@@ -9,10 +13,15 @@ import com.example.newsapp.domain.repository.NewsRepository
 import com.example.newsapp.domain.useCases.app_entry.AppEntryUseCases
 import com.example.newsapp.domain.useCases.app_entry.ReadAppEntry
 import com.example.newsapp.domain.useCases.app_entry.SavedAppEntry
+import com.example.newsapp.domain.useCases.news.DeleteArticles
 import com.example.newsapp.domain.useCases.news.GetNews
 import com.example.newsapp.domain.useCases.news.NewsUseCases
-import com.example.newsapp.domain.useCases.news.SearchNews
+import com.example.newsapp.presentation.search.SearchNews
+import com.example.newsapp.domain.useCases.news.SelectArticle
+import com.example.newsapp.domain.useCases.news.SelectArticles
+import com.example.newsapp.domain.useCases.news.UpsertArticle
 import com.example.newsapp.util.Constants.BASE_URL
+import com.example.newsapp.util.Constants.NEWS_DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,60 +30,40 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-
 @Module
-@InstallIn(SingletonComponent::class) // Tells Hilt: Keep these dependencies alive as long as the app is alive
-// Hilt module that provides dependencies needed throughout the app
+@InstallIn(SingletonComponent::class)
 object AppModule {
 
-    // Provide implementation for LocalUserManager
-    @Provides
-    @Singleton
-    fun provideLocalUserManager(
-        application: Application
-    ) : LocalUserManager = LocalUserManagerImpl( context = application)
-
-
-
-    // Provide AppEntryUseCases with both read and save logic injected
-    @Provides
-    @Singleton
-    fun provideAppEntryUseCases(
-        localUserManager: LocalUserManager
-    ) : AppEntryUseCases = AppEntryUseCases(
-        readAppEntry = ReadAppEntry(localUserManager),
-        savedAppEntry = SavedAppEntry(localUserManager)
-    )
 
     @Provides
     @Singleton
-    fun provideNewsApi() : NewsApi{
-        return Retrofit.Builder()
+    fun provideApiInstance(): NewsApi {
+        return Retrofit
+            .Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(NewsApi::class.java)
     }
 
-
-
     @Provides
     @Singleton
-    fun provideNewsRepository(
-        newsApi: NewsApi
-    ) : NewsRepository = NewsRepositoryImpl(newsApi)
-
-
-
-    @Provides
-    @Singleton
-    fun provideNewsUseCases(
-        newsRepository: NewsRepository
-    ) : NewsUseCases{
-        return NewsUseCases(
-            getNews = GetNews(newsRepository),
-            searchNews = SearchNews(newsRepository)
-        )
+    fun provideNewsDatabase(
+        application: Application
+    ): NewsDatabase {
+        return Room.databaseBuilder(
+            context = application,
+            klass = NewsDatabase::class.java,
+            name = "news_db"
+        ).addTypeConverter(NewsTypeConvertor())
+            .fallbackToDestructiveMigration()
+            .build()
     }
+
+    @Provides
+    @Singleton
+    fun provideNewsDao(
+        newsDatabase: NewsDatabase
+    ): NewsDao = newsDatabase.newsDao
 }
 

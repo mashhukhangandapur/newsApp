@@ -1,4 +1,4 @@
-package com.example.newsapp.domain.useCases.news
+package com.example.newsapp.presentation.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,22 +8,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.newsapp.domain.model.Article
+import com.example.newsapp.presentation.Dimens.MediumPadding1
 import com.example.newsapp.presentation.common.ArticlesList
 import com.example.newsapp.presentation.common.SearchBar
 import com.example.newsapp.presentation.navGraph.Route
-import com.example.newsapp.presentation.search.SearchEvent
-import com.example.newsapp.presentation.search.SearchState
 
 @Composable
 fun SearchScreen(
     state : SearchState,
     event : (SearchEvent) -> Unit,
-    navigate : (String) -> Unit
+    navigateToDetails : (Article) -> Unit
 ){
     Column(modifier = Modifier
-        .padding( top = 3.dp, start = 3.dp , end = 3.dp)
+        .padding( top = MediumPadding1, start = MediumPadding1 , end = MediumPadding1)
         .statusBarsPadding()
         .fillMaxSize()
     ) {
@@ -34,13 +33,11 @@ fun SearchScreen(
             onSearch = { event(SearchEvent.SearchNews) }
         )
 
-        Spacer(modifier = Modifier.height(3.dp))
+        Spacer(modifier = Modifier.height(MediumPadding1))
 
         state.articles?.let {
             val articles = it.collectAsLazyPagingItems()
-            ArticlesList(articles = articles, onClick = { navigate(Route.DetailScreen.route)})
+            ArticlesList(articles = articles, onClick = navigateToDetails )
         }
-
     }
-    
 }

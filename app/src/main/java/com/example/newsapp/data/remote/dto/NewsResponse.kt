@@ -1,4 +1,4 @@
-package com.example.newsapp.data.remote
+package com.example.newsapp.data.remote.dto
 
 import com.example.newsapp.domain.model.Article
 

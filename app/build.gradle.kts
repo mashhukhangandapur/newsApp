@@ -3,7 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.hilt)
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0" // No change
+    id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
 
 }
 
@@ -45,10 +47,8 @@ dependencies {
     // Versions
     val nav_version = "2.7.5"
     val compose_version = "1.6.0-alpha08"
-    val room = "2.6.0"
 
-    // System UI Controller
-    implementation(libs.systemuicontroller)
+//    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
     //Javapoet
     implementation(libs.javapoet)
@@ -64,13 +64,13 @@ dependencies {
     implementation(libs.converter.gson)
 
     // DataStore Preferences
-    implementation(libs.datastore.preferences)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+//    implementation(libs.datastore.preferences)
 
     // Room
-    implementation("androidx.room:room-runtime:$room")
-    implementation("androidx.room:room-ktx:$room")
-    kapt("androidx.room:room-compiler:$room")
-
+    implementation("androidx.room:room-runtime:2.7.1")
+    kapt("androidx.room:room-compiler:2.7.1")
+    implementation("androidx.room:room-ktx:2.7.1")
     // Navigation
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
@@ -83,6 +83,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:$compose_version")
 
     // Hilt
+    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+    implementation("com.google.dagger:hilt-android:2.56.2")
+    kapt("com.google.dagger:hilt-compiler:2.56.2")
     implementation(libs.hilt.core)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
